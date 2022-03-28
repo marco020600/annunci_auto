@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/inserisci_annuncio', function() {
+    return view('inserisci_annuncio');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -10,4 +10,14 @@ class Modello extends Model
     use HasFactory;
 
     protected $table = 'modelli';
+
+    public function marche()
+    {
+        return $this->belongsTo(Marca::class);
+    }
+
+    public function annunci()
+    {
+        return $this->hasMany(Annuncio::class);
+    }
 }

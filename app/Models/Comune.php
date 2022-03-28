@@ -10,4 +10,9 @@ class Comune extends Model
     use HasFactory;
 
     protected $table = 'comuni';
+
+    public function annunci()
+    {
+        return $this->hasMany(Annuncio::class);
+    }
 }

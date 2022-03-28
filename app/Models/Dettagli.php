@@ -10,4 +10,11 @@ class Dettagli extends Model
     use HasFactory;
 
     protected $table = 'dettagli';
+
+    public function annuncio()
+    {
+        return $this->belongsTo(Annuncio::class);
+    }
 }
+
+

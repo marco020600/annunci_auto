@@ -10,4 +10,9 @@ class Marca extends Model
     use HasFactory;
 
     protected $table = 'marche';
+
+    public function modelli()
+    {
+        return $this->hasMany(Modello::class);
+    }
 }
