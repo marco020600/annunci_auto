@@ -30,4 +30,8 @@ class Annuncio extends Model
     {
         return $this->belongsTo(Comune::class);
     }
+
+    public function immagini() {
+        return $this->hasMany(Immagine::class);
+    }
 }

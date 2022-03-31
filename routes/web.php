@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnunciController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +18,9 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/inserisci_annuncio', function() {
-    return view('inserisci_annuncio');
-});
-
+Route::get('/annunci', [AnnunciController::class, 'index'])->name('index.annunci');
+Route::get('/inserisci/annuncio', [AnnunciController::class, 'create'])->name('create.annunci');
+Route::post('annuncio/inserito', [AnnunciController::class, 'store'])->name('store.annunci');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

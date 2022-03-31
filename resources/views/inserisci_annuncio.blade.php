@@ -6,6 +6,8 @@
     </div>
 
     <div class="container col-5">
+        <form method="POST" action={{Route('store.annunci')}}>
+        @csrf
         <label for="stato" class="fw-normal fs-5 me-2">Stato:</label>
         <input type="checkbox" name="stato" value="nuovo">Nuovo
         <input type="checkbox" name="stato" value="usato"/> Usato
@@ -40,6 +42,6 @@
         <select name="comune"></select>
         <br><br>
         <button type="submit" class="btn btn-primary">Inserisci</button>
-
+        </form>
     </div>
 @endsection
