@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Annuncio;
+use App\Models\Immagine;
 use Illuminate\Http\Request;
 
-class MarcheController extends Controller
+class ImmaginiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +23,10 @@ class MarcheController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('inserisci_dettagli');
+        $annuncio = Annuncio::find($id);
+        return view('immagine_annuncio', ['annuncio' => $annuncio]);
     }
 
     /**
@@ -34,7 +37,13 @@ class MarcheController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $immagine = new Immagine;
+        $immagine->nomefile = $request->nomefile;
+        $immagine->annuncio_id = $request->id;
+        $immagine->save();
+
+        return redirect()->route('index');
     }
 
     /**

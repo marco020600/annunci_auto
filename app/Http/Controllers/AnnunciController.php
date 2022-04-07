@@ -4,7 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Annuncio;
+use App\Models\Comune;
+use App\Models\Dettagli;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Marca;
+use App\Models\Modello;
+use Illuminate\Support\Facades\DB;
+
+use function Ramsey\Uuid\v1;
 
 class AnnunciController extends Controller
 {
@@ -15,7 +22,8 @@ class AnnunciController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $annunci = Annuncio::all();
+        return view('miei_annunci', ['annunci' => $annunci]);
     }
 
     /**
@@ -25,7 +33,10 @@ class AnnunciController extends Controller
      */
     public function create()
     {
-        return view('inserisci_annuncio');
+        $marche = Marca::all();
+        $modelli = Modello::all();
+        $comuni = Comune::all();
+        return view('inserisci_annuncio', ['marche' => $marche, 'modelli' => $modelli, 'comuni' => $comuni ]);
     }
 
     /**
@@ -36,6 +47,21 @@ class AnnunciController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'stato' => 'required',
+            'titolo' => 'required',
+            'prezzo' => 'required',
+            'chilometraggio' => 'required',
+            'immatricolazione' => 'required',
+            'potenza' => 'required',
+            'cilindrata' => 'required',
+            'colore' => 'required',
+            'alimentazione' => 'required',
+            'carrozzeria' => 'required',
+            'descrizione' => 'required',
+            'indirizzo' => 'required'
+        ]);
+
         $annuncio = new Annuncio;
         $annuncio->stato = $request->stato;
         $annuncio->titolo = $request->titolo;
@@ -53,8 +79,10 @@ class AnnunciController extends Controller
         $annuncio->modello_id = $request->modello_id;
         $annuncio->comune_id = $request->comune_id;
         $annuncio->save();
-        return redirect()->route('annunci.store');
+        return redirect()->route('create.dettagli', [$annuncio->id]);
     }
+
+
 
     /**
      * Display the specified resource.
@@ -64,7 +92,9 @@ class AnnunciController extends Controller
      */
     public function show($id)
     {
-        //
+        $dettagli = Dettagli::findorfail($id);
+        $annuncio = Annuncio::findOrFail($id);
+        return view('mostra_annuncio', compact('annuncio'), compact('dettagli'));
     }
 
     /**

@@ -58,7 +58,7 @@ return [
             'driver' => 'memcached',
             'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
             'sasl' => [
-                env('MEMCACHED_USERNAME'),
+                env('MEMCACHED_USERname'),
                 env('MEMCACHED_PASSWORD'),
             ],
             'options' => [
@@ -105,6 +105,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_name', 'laravel'), '_').'_cache'),
 
 ];

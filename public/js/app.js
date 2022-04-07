@@ -196,7 +196,7 @@ function onMutate(mutations) {
     }
     if (mutations[i].type === "attributes") {
       let el = mutations[i].target;
-      let name = mutations[i].attributeName;
+      let name = mutations[i].attributename;
       let oldValue = mutations[i].oldValue;
       let add2 = () => {
         if (!addedAttributes.has(el))
@@ -532,7 +532,7 @@ function directive(name, callback) {
 }
 function directives(el, attributes, originalAttributeOverride) {
   let transformedAttributeMap = {};
-  let directives2 = Array.from(attributes).map(toTransformedAttributes((newName, oldName) => transformedAttributeMap[newName] = oldName)).filter(outNonAlpineAttributes).map(toParsedDirectives(transformedAttributeMap, originalAttributeOverride)).sort(byPriority);
+  let directives2 = Array.from(attributes).map(toTransformedAttributes((newname, oldname) => transformedAttributeMap[newname] = oldname)).filter(outNonAlpineAttributes).map(toParsedDirectives(transformedAttributeMap, originalAttributeOverride)).sort(byPriority);
   return directives2.map((directive2) => {
     return getDirectiveHandler(el, directive2);
   });
@@ -600,12 +600,12 @@ var into = (i) => i;
 function toTransformedAttributes(callback = () => {
 }) {
   return ({name, value}) => {
-    let {name: newName, value: newValue} = attributeTransformers.reduce((carry, transform) => {
+    let {name: newname, value: newValue} = attributeTransformers.reduce((carry, transform) => {
       return transform(carry);
     }, {name, value});
-    if (newName !== name)
-      callback(newName, name);
-    return {name: newName, value: newValue};
+    if (newname !== name)
+      callback(newname, name);
+    return {name: newname, value: newValue};
   };
 }
 var attributeTransformers = [];
@@ -1225,7 +1225,7 @@ function bindInputValue(el, value) {
         el.checked = !!value;
       }
     }
-  } else if (el.tagName === "SELECT") {
+  } else if (el.tagname === "SELECT") {
     updateSelect(el, value);
   } else {
     if (el.value === value)
@@ -1252,9 +1252,9 @@ function bindAttribute(el, name, value) {
     setIfChanged(el, name, value);
   }
 }
-function setIfChanged(el, attrName, value) {
-  if (el.getAttribute(attrName) != value) {
-    el.setAttribute(attrName, value);
+function setIfChanged(el, attrname, value) {
+  if (el.getAttribute(attrname) != value) {
+    el.setAttribute(attrname, value);
   }
 }
 function updateSelect(el, value) {
@@ -1271,7 +1271,7 @@ function camelCase(subject) {
 function checkedAttrLooseCompare(valueA, valueB) {
   return valueA == valueB;
 }
-function isBooleanAttr(attrName) {
+function isBooleanAttr(attrname) {
   const booleanAttributes = [
     "disabled",
     "checked",
@@ -1299,7 +1299,7 @@ function isBooleanAttr(attrName) {
     "defer",
     "nomodule"
   ];
-  return booleanAttributes.includes(attrName);
+  return booleanAttributes.includes(attrname);
 }
 function attributeShouldntBePreservedIfFalsy(name) {
   return !["aria-pressed", "aria-checked", "aria-expanded", "aria-selected"].includes(name);
@@ -1471,7 +1471,7 @@ function makeMap(str, expectsLowerCase) {
   }
   return expectsLowerCase ? (val) => !!map[val.toLowerCase()] : (val) => !!map[val];
 }
-var PatchFlagNames = {
+var PatchFlagnames = {
   [1]: `TEXT`,
   [2]: `CLASS`,
   [4]: `STYLE`,
@@ -1706,7 +1706,7 @@ function trigger(target, type, key, newValue, oldValue, oldTarget) {
   effects.forEach(run);
 }
 var isNonTrackableKeys = /* @__PURE__ */ makeMap(`__proto__,__v_isRef,__isVue`);
-var builtInSymbols = new Set(Object.getOwnPropertyNames(Symbol).map((key) => Symbol[key]).filter(isSymbol));
+var builtInSymbols = new Set(Object.getOwnPropertynames(Symbol).map((key) => Symbol[key]).filter(isSymbol));
 var get2 = /* @__PURE__ */ createGetter();
 var shallowGet = /* @__PURE__ */ createGetter(false, true);
 var readonlyGet = /* @__PURE__ */ createGetter(true);
@@ -2250,7 +2250,7 @@ directive("modelable", (el, {expression}, {effect: effect3, evaluateLater: evalu
 
 // packages/alpinejs/src/directives/x-teleport.js
 directive("teleport", (el, {expression}, {cleanup: cleanup2}) => {
-  if (el.tagName.toLowerCase() !== "template")
+  if (el.tagname.toLowerCase() !== "template")
     warn("x-teleport can only be used on a <template> tag", el);
   let target = document.querySelector(expression);
   if (!target)
@@ -2259,8 +2259,8 @@ directive("teleport", (el, {expression}, {cleanup: cleanup2}) => {
   el._x_teleport = clone2;
   clone2._x_teleportBack = el;
   if (el._x_forwardEvents) {
-    el._x_forwardEvents.forEach((eventName) => {
-      clone2.addEventListener(eventName, (e) => {
+    el._x_forwardEvents.forEach((eventname) => {
+      clone2.addEventListener(eventname, (e) => {
         e.stopPropagation();
         el.dispatchEvent(new e.constructor(e.type, e));
       });
@@ -2437,7 +2437,7 @@ directive("model", (el, {modifiers, expression}, {effect: effect3, cleanup: clea
   let evaluate2 = evaluateLater(el, expression);
   let assignmentExpression = `${expression} = rightSideOfExpression($event, ${expression})`;
   let evaluateAssignment = evaluateLater(el, assignmentExpression);
-  var event = el.tagName.toLowerCase() === "select" || ["checkbox", "radio"].includes(el.type) || modifiers.includes("lazy") ? "change" : "input";
+  var event = el.tagname.toLowerCase() === "select" || ["checkbox", "radio"].includes(el.type) || modifiers.includes("lazy") ? "change" : "input";
   let assigmentFunction = generateAssignmentFunction(el, modifiers, expression);
   let removeListener = on(el, event, modifiers, (e) => {
     evaluateAssignment(() => {
@@ -2495,7 +2495,7 @@ function generateAssignmentFunction(el, modifiers, expression) {
         } else {
           return event.target.checked;
         }
-      } else if (el.tagName.toLowerCase() === "select" && el.multiple) {
+      } else if (el.tagname.toLowerCase() === "select" && el.multiple) {
         return modifiers.includes("number") ? Array.from(event.target.selectedOptions).map((option) => {
           let rawValue = option.value || option.text;
           return safeParseNumber(rawValue);
@@ -2658,19 +2658,19 @@ directive("show", (el, {modifiers, expression}, {effect: effect3}) => {
 
 // packages/alpinejs/src/directives/x-for.js
 directive("for", (el, {expression}, {effect: effect3, cleanup: cleanup2}) => {
-  let iteratorNames = parseForExpression(expression);
-  let evaluateItems = evaluateLater(el, iteratorNames.items);
+  let iteratornames = parseForExpression(expression);
+  let evaluateItems = evaluateLater(el, iteratornames.items);
   let evaluateKey = evaluateLater(el, el._x_keyExpression || "index");
   el._x_prevKeys = [];
   el._x_lookup = {};
-  effect3(() => loop(el, iteratorNames, evaluateItems, evaluateKey));
+  effect3(() => loop(el, iteratornames, evaluateItems, evaluateKey));
   cleanup2(() => {
     Object.values(el._x_lookup).forEach((el2) => el2.remove());
     delete el._x_prevKeys;
     delete el._x_lookup;
   });
 });
-function loop(el, iteratorNames, evaluateItems, evaluateKey) {
+function loop(el, iteratornames, evaluateItems, evaluateKey) {
   let isObject2 = (i) => typeof i === "object" && !Array.isArray(i);
   let templateEl = el;
   evaluateItems((items) => {
@@ -2685,13 +2685,13 @@ function loop(el, iteratorNames, evaluateItems, evaluateKey) {
     let keys = [];
     if (isObject2(items)) {
       items = Object.entries(items).map(([key, value]) => {
-        let scope2 = getIterationScopeVariables(iteratorNames, value, key, items);
+        let scope2 = getIterationScopeVariables(iteratornames, value, key, items);
         evaluateKey((value2) => keys.push(value2), {scope: {index: key, ...scope2}});
         scopes.push(scope2);
       });
     } else {
       for (let i = 0; i < items.length; i++) {
-        let scope2 = getIterationScopeVariables(iteratorNames, items[i], i, items);
+        let scope2 = getIterationScopeVariables(iteratornames, items[i], i, items);
         evaluateKey((value) => keys.push(value), {scope: {index: i, ...scope2}});
         scopes.push(scope2);
       }
@@ -2794,25 +2794,25 @@ function parseForExpression(expression) {
   }
   return res;
 }
-function getIterationScopeVariables(iteratorNames, item, index, items) {
+function getIterationScopeVariables(iteratornames, item, index, items) {
   let scopeVariables = {};
-  if (/^\[.*\]$/.test(iteratorNames.item) && Array.isArray(item)) {
-    let names = iteratorNames.item.replace("[", "").replace("]", "").split(",").map((i) => i.trim());
+  if (/^\[.*\]$/.test(iteratornames.item) && Array.isArray(item)) {
+    let names = iteratornames.item.replace("[", "").replace("]", "").split(",").map((i) => i.trim());
     names.forEach((name, i) => {
       scopeVariables[name] = item[i];
     });
-  } else if (/^\{.*\}$/.test(iteratorNames.item) && !Array.isArray(item) && typeof item === "object") {
-    let names = iteratorNames.item.replace("{", "").replace("}", "").split(",").map((i) => i.trim());
+  } else if (/^\{.*\}$/.test(iteratornames.item) && !Array.isArray(item) && typeof item === "object") {
+    let names = iteratornames.item.replace("{", "").replace("}", "").split(",").map((i) => i.trim());
     names.forEach((name) => {
       scopeVariables[name] = item[name];
     });
   } else {
-    scopeVariables[iteratorNames.item] = item;
+    scopeVariables[iteratornames.item] = item;
   }
-  if (iteratorNames.index)
-    scopeVariables[iteratorNames.index] = index;
-  if (iteratorNames.collection)
-    scopeVariables[iteratorNames.collection] = items;
+  if (iteratornames.index)
+    scopeVariables[iteratornames.index] = index;
+  if (iteratornames.collection)
+    scopeVariables[iteratornames.collection] = items;
   return scopeVariables;
 }
 function isNumeric3(subject) {
@@ -2878,7 +2878,7 @@ mapAttributes(startingWith("@", into(prefix("on:"))));
 directive("on", skipDuringClone((el, {value, modifiers, expression}, {cleanup: cleanup2}) => {
   let evaluate2 = expression ? evaluateLater(el, expression) : () => {
   };
-  if (el.tagName.toLowerCase() === "template") {
+  if (el.tagname.toLowerCase() === "template") {
     if (!el._x_forwardEvents)
       el._x_forwardEvents = [];
     if (!el._x_forwardEvents.includes(value))
@@ -3045,12 +3045,12 @@ module.exports = function xhrAdapter(config) {
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
       // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
-        cookies.read(config.xsrfCookieName) :
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookiename ?
+        cookies.read(config.xsrfCookiename) :
         undefined;
 
       if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+        requestHeaders[config.xsrfHeadername] = xsrfValue;
       }
     }
 
@@ -3709,7 +3709,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
       description: this.description,
       number: this.number,
       // Mozilla
-      fileName: this.fileName,
+      filename: this.filename,
       lineNumber: this.lineNumber,
       columnNumber: this.columnNumber,
       stack: this.stack,
@@ -3752,8 +3752,8 @@ module.exports = function mergeConfig(config1, config2) {
   var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
   var defaultToConfig2Keys = [
     'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
+    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookiename',
+    'xsrfHeadername', 'onUploadProgress', 'onDownloadProgress', 'decompress',
     'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
     'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
   ];
@@ -3902,7 +3902,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
-var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
+var normalizeHeadername = __webpack_require__(/*! ./helpers/normalizeHeadername */ "./node_modules/axios/lib/helpers/normalizeHeadername.js");
 var enhanceError = __webpack_require__(/*! ./core/enhanceError */ "./node_modules/axios/lib/core/enhanceError.js");
 
 var DEFAULT_CONTENT_TYPE = {
@@ -3953,8 +3953,8 @@ var defaults = {
   adapter: getDefaultAdapter(),
 
   transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Accept');
-    normalizeHeaderName(headers, 'Content-Type');
+    normalizeHeadername(headers, 'Accept');
+    normalizeHeadername(headers, 'Content-Type');
 
     if (utils.isFormData(data) ||
       utils.isArrayBuffer(data) ||
@@ -4007,8 +4007,8 @@ var defaults = {
    */
   timeout: 0,
 
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
+  xsrfCookiename: 'XSRF-TOKEN',
+  xsrfHeadername: 'X-XSRF-TOKEN',
 
   maxContentLength: -1,
   maxBodyLength: -1,
@@ -4355,9 +4355,9 @@ module.exports = (
 
 /***/ }),
 
-/***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
+/***/ "./node_modules/axios/lib/helpers/normalizeHeadername.js":
 /*!***************************************************************!*\
-  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  !*** ./node_modules/axios/lib/helpers/normalizeHeadername.js ***!
   \***************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -4366,10 +4366,10 @@ module.exports = (
 
 var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
 
-module.exports = function normalizeHeaderName(headers, normalizedName) {
+module.exports = function normalizeHeadername(headers, normalizedname) {
   utils.forEach(headers, function processHeader(value, name) {
-    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
-      headers[normalizedName] = value;
+    if (name !== normalizedname && name.toUpperCase() === normalizedname.toUpperCase()) {
+      headers[normalizedname] = value;
       delete headers[name];
     }
   });
@@ -5157,7 +5157,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
   /** Used to match property names within property paths. */
   var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
       reIsPlainProp = /^\w*$/,
-      rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+      rePropname = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
   /**
    * Used to match `RegExp`
@@ -6567,7 +6567,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     var metaMap = WeakMap && new WeakMap;
 
     /** Used to lookup unminified function names. */
-    var realNames = {};
+    var realnames = {};
 
     /** Used to detect maps, sets, and weakmaps. */
     var dataViewCtorString = toSource(DataView),
@@ -10010,10 +10010,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * Creates a function like `_.lowerFirst`.
      *
      * @private
-     * @param {string} methodName The name of the `String` case method to use.
+     * @param {string} methodname The name of the `String` case method to use.
      * @returns {Function} Returns the new case function.
      */
-    function createCaseFirst(methodName) {
+    function createCaseFirst(methodname) {
       return function(string) {
         string = toString(string);
 
@@ -10029,7 +10029,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
           ? castSlice(strSymbols, 1).join('')
           : string.slice(1);
 
-        return chr[methodName]() + trailing;
+        return chr[methodname]() + trailing;
       };
     }
 
@@ -10157,7 +10157,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
           if (typeof func != 'function') {
             throw new TypeError(FUNC_ERROR_TEXT);
           }
-          if (prereq && !wrapper && getFuncName(func) == 'wrapper') {
+          if (prereq && !wrapper && getFuncname(func) == 'wrapper') {
             var wrapper = new LodashWrapper([], true);
           }
         }
@@ -10165,17 +10165,17 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         while (++index < length) {
           func = funcs[index];
 
-          var funcName = getFuncName(func),
-              data = funcName == 'wrapper' ? getData(func) : undefined;
+          var funcname = getFuncname(func),
+              data = funcname == 'wrapper' ? getData(func) : undefined;
 
           if (data && isLaziable(data[0]) &&
                 data[1] == (WRAP_ARY_FLAG | WRAP_CURRY_FLAG | WRAP_PARTIAL_FLAG | WRAP_REARG_FLAG) &&
                 !data[4].length && data[9] == 1
               ) {
-            wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
+            wrapper = wrapper[getFuncname(data[0])].apply(wrapper, data[3]);
           } else {
             wrapper = (func.length == 1 && isLaziable(func))
-              ? wrapper[funcName]()
+              ? wrapper[funcname]()
               : wrapper.thru(func);
           }
         }
@@ -10483,11 +10483,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * Creates a function like `_.round`.
      *
      * @private
-     * @param {string} methodName The name of the `Math` method to use when rounding.
+     * @param {string} methodname The name of the `Math` method to use when rounding.
      * @returns {Function} Returns the new round function.
      */
-    function createRound(methodName) {
-      var func = Math[methodName];
+    function createRound(methodname) {
+      var func = Math[methodname];
       return function(number, precision) {
         number = toNumber(number);
         precision = precision == null ? 0 : nativeMin(toInteger(precision), 292);
@@ -10959,10 +10959,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @param {Function} func The function to query.
      * @returns {string} Returns the function name.
      */
-    function getFuncName(func) {
+    function getFuncname(func) {
       var result = (func.name + ''),
-          array = realNames[result],
-          length = hasOwnProperty.call(realNames, result) ? array.length : 0;
+          array = realnames[result],
+          length = hasOwnProperty.call(realnames, result) ? array.length : 0;
 
       while (length--) {
         var data = array[length],
@@ -11412,10 +11412,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      *  else `false`.
      */
     function isLaziable(func) {
-      var funcName = getFuncName(func),
-          other = lodash[funcName];
+      var funcname = getFuncname(func),
+          other = lodash[funcname];
 
-      if (typeof other != 'function' || !(funcName in LazyWrapper.prototype)) {
+      if (typeof other != 'function' || !(funcname in LazyWrapper.prototype)) {
         return false;
       }
       if (func === other) {
@@ -11814,7 +11814,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
       if (string.charCodeAt(0) === 46 /* . */) {
         result.push('');
       }
-      string.replace(rePropName, function(match, number, quote, subString) {
+      string.replace(rePropname, function(match, number, quote, subString) {
         result.push(quote ? subString.replace(reEscapeChar, '$1') : (number || match));
       });
       return result;
@@ -16137,7 +16137,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      *
      * console.log(el === document.body);
      * // => false
-     * console.log(el.nodeName);
+     * console.log(el.nodename);
      * // => 'BODY'
      * console.log(el.childNodes.length);
      * // => 0
@@ -16192,7 +16192,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      *
      * console.log(el === document.body);
      * // => false
-     * console.log(el.nodeName);
+     * console.log(el.nodename);
      * // => 'BODY'
      * console.log(el.childNodes.length);
      * // => 20
@@ -20353,7 +20353,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @memberOf _
      * @category Util
      * @param {Object} object The object to bind and assign the bound methods to.
-     * @param {...(string|string[])} methodNames The object method names to bind.
+     * @param {...(string|string[])} methodnames The object method names to bind.
      * @returns {Object} Returns `object`.
      * @example
      *
@@ -20368,8 +20368,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * jQuery(element).on('click', view.click);
      * // => Logs 'clicked docs' when clicked.
      */
-    var bindAll = flatRest(function(object, methodNames) {
-      arrayEach(methodNames, function(key) {
+    var bindAll = flatRest(function(object, methodnames) {
+      arrayEach(methodnames, function(key) {
         key = toKey(key);
         baseAssignValue(object, key, bind(object[key], object));
       });
@@ -20790,23 +20790,23 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      */
     function mixin(object, source, options) {
       var props = keys(source),
-          methodNames = baseFunctions(source, props);
+          methodnames = baseFunctions(source, props);
 
       if (options == null &&
-          !(isObject(source) && (methodNames.length || !props.length))) {
+          !(isObject(source) && (methodnames.length || !props.length))) {
         options = source;
         source = object;
         object = this;
-        methodNames = baseFunctions(source, keys(source));
+        methodnames = baseFunctions(source, keys(source));
       }
       var chain = !(isObject(options) && 'chain' in options) || !!options.chain,
           isFunc = isFunction(object);
 
-      arrayEach(methodNames, function(methodName) {
-        var func = source[methodName];
-        object[methodName] = func;
+      arrayEach(methodnames, function(methodname) {
+        var func = source[methodname];
+        object[methodname] = func;
         if (isFunc) {
-          object.prototype[methodName] = function() {
+          object.prototype[methodname] = function() {
             var chainAll = this.__chain__;
             if (chain || chainAll) {
               var result = object(this.__wrapped__),
@@ -21951,9 +21951,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
     mixin(lodash, (function() {
       var source = {};
-      baseForOwn(lodash, function(func, methodName) {
-        if (!hasOwnProperty.call(lodash.prototype, methodName)) {
-          source[methodName] = func;
+      baseForOwn(lodash, function(func, methodname) {
+        if (!hasOwnProperty.call(lodash.prototype, methodname)) {
+          source[methodname] = func;
         }
       });
       return source;
@@ -21971,13 +21971,13 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     lodash.VERSION = VERSION;
 
     // Assign default placeholders.
-    arrayEach(['bind', 'bindKey', 'curry', 'curryRight', 'partial', 'partialRight'], function(methodName) {
-      lodash[methodName].placeholder = lodash;
+    arrayEach(['bind', 'bindKey', 'curry', 'curryRight', 'partial', 'partialRight'], function(methodname) {
+      lodash[methodname].placeholder = lodash;
     });
 
     // Add `LazyWrapper` methods for `_.drop` and `_.take` variants.
-    arrayEach(['drop', 'take'], function(methodName, index) {
-      LazyWrapper.prototype[methodName] = function(n) {
+    arrayEach(['drop', 'take'], function(methodname, index) {
+      LazyWrapper.prototype[methodname] = function(n) {
         n = n === undefined ? 1 : nativeMax(toInteger(n), 0);
 
         var result = (this.__filtered__ && !index)
@@ -21989,23 +21989,23 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         } else {
           result.__views__.push({
             'size': nativeMin(n, MAX_ARRAY_LENGTH),
-            'type': methodName + (result.__dir__ < 0 ? 'Right' : '')
+            'type': methodname + (result.__dir__ < 0 ? 'Right' : '')
           });
         }
         return result;
       };
 
-      LazyWrapper.prototype[methodName + 'Right'] = function(n) {
-        return this.reverse()[methodName](n).reverse();
+      LazyWrapper.prototype[methodname + 'Right'] = function(n) {
+        return this.reverse()[methodname](n).reverse();
       };
     });
 
     // Add `LazyWrapper` methods that accept an `iteratee` value.
-    arrayEach(['filter', 'map', 'takeWhile'], function(methodName, index) {
+    arrayEach(['filter', 'map', 'takeWhile'], function(methodname, index) {
       var type = index + 1,
           isFilter = type == LAZY_FILTER_FLAG || type == LAZY_WHILE_FLAG;
 
-      LazyWrapper.prototype[methodName] = function(iteratee) {
+      LazyWrapper.prototype[methodname] = function(iteratee) {
         var result = this.clone();
         result.__iteratees__.push({
           'iteratee': getIteratee(iteratee, 3),
@@ -22017,20 +22017,20 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     });
 
     // Add `LazyWrapper` methods for `_.head` and `_.last`.
-    arrayEach(['head', 'last'], function(methodName, index) {
-      var takeName = 'take' + (index ? 'Right' : '');
+    arrayEach(['head', 'last'], function(methodname, index) {
+      var takename = 'take' + (index ? 'Right' : '');
 
-      LazyWrapper.prototype[methodName] = function() {
-        return this[takeName](1).value()[0];
+      LazyWrapper.prototype[methodname] = function() {
+        return this[takename](1).value()[0];
       };
     });
 
     // Add `LazyWrapper` methods for `_.initial` and `_.tail`.
-    arrayEach(['initial', 'tail'], function(methodName, index) {
-      var dropName = 'drop' + (index ? '' : 'Right');
+    arrayEach(['initial', 'tail'], function(methodname, index) {
+      var dropname = 'drop' + (index ? '' : 'Right');
 
-      LazyWrapper.prototype[methodName] = function() {
-        return this.__filtered__ ? new LazyWrapper(this) : this[dropName](1);
+      LazyWrapper.prototype[methodname] = function() {
+        return this.__filtered__ ? new LazyWrapper(this) : this[dropname](1);
       };
     });
 
@@ -22087,16 +22087,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     };
 
     // Add `LazyWrapper` methods to `lodash.prototype`.
-    baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-      var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodName),
-          isTaker = /^(?:head|last)$/.test(methodName),
-          lodashFunc = lodash[isTaker ? ('take' + (methodName == 'last' ? 'Right' : '')) : methodName],
-          retUnwrapped = isTaker || /^find/.test(methodName);
+    baseForOwn(LazyWrapper.prototype, function(func, methodname) {
+      var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodname),
+          isTaker = /^(?:head|last)$/.test(methodname),
+          lodashFunc = lodash[isTaker ? ('take' + (methodname == 'last' ? 'Right' : '')) : methodname],
+          retUnwrapped = isTaker || /^find/.test(methodname);
 
       if (!lodashFunc) {
         return;
       }
-      lodash.prototype[methodName] = function() {
+      lodash.prototype[methodname] = function() {
         var value = this.__wrapped__,
             args = isTaker ? [1] : arguments,
             isLazy = value instanceof LazyWrapper,
@@ -22132,36 +22132,36 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     });
 
     // Add `Array` methods to `lodash.prototype`.
-    arrayEach(['pop', 'push', 'shift', 'sort', 'splice', 'unshift'], function(methodName) {
-      var func = arrayProto[methodName],
-          chainName = /^(?:push|sort|unshift)$/.test(methodName) ? 'tap' : 'thru',
-          retUnwrapped = /^(?:pop|shift)$/.test(methodName);
+    arrayEach(['pop', 'push', 'shift', 'sort', 'splice', 'unshift'], function(methodname) {
+      var func = arrayProto[methodname],
+          chainname = /^(?:push|sort|unshift)$/.test(methodname) ? 'tap' : 'thru',
+          retUnwrapped = /^(?:pop|shift)$/.test(methodname);
 
-      lodash.prototype[methodName] = function() {
+      lodash.prototype[methodname] = function() {
         var args = arguments;
         if (retUnwrapped && !this.__chain__) {
           var value = this.value();
           return func.apply(isArray(value) ? value : [], args);
         }
-        return this[chainName](function(value) {
+        return this[chainname](function(value) {
           return func.apply(isArray(value) ? value : [], args);
         });
       };
     });
 
     // Map minified method names to their real names.
-    baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-      var lodashFunc = lodash[methodName];
+    baseForOwn(LazyWrapper.prototype, function(func, methodname) {
+      var lodashFunc = lodash[methodname];
       if (lodashFunc) {
         var key = lodashFunc.name + '';
-        if (!hasOwnProperty.call(realNames, key)) {
-          realNames[key] = [];
+        if (!hasOwnProperty.call(realnames, key)) {
+          realnames[key] = [];
         }
-        realNames[key].push({ 'name': methodName, 'func': lodashFunc });
+        realnames[key].push({ 'name': methodname, 'func': lodashFunc });
       }
     });
 
-    realNames[createHybrid(undefined, WRAP_BIND_KEY_FLAG).name] = [{
+    realnames[createHybrid(undefined, WRAP_BIND_KEY_FLAG).name] = [{
       'name': 'wrapper',
       'func': undefined
     }];

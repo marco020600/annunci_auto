@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMarcheTable extends Migration
+class AlterModelliTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateMarcheTable extends Migration
      */
     public function up()
     {
-        Schema::create('marche', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('immagine');
-            $table->timestamps();
+        Schema::table('modelli', function (Blueprint $table) {
+            $table->string('code');
         });
     }
 
@@ -28,6 +25,6 @@ class CreateMarcheTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marche');
+        //
     }
 }

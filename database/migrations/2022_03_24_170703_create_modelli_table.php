@@ -15,7 +15,7 @@ class CreateModelliTable extends Migration
     {
         Schema::create('modelli', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('name');
             $table->foreignId('marca_id');
             $table->timestamps();
             $table->foreign('marca_id')->references('id')->on('marche')->onUpdate('cascade')->onDelete('cascade');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Annuncio;
+use App\Models\Dettagli;
 use Illuminate\Http\Request;
 
 class DettagliController extends Controller
@@ -21,9 +23,10 @@ class DettagliController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $annuncio = Annuncio::find($id);
+        return view('inserisci_dettagli', ['annuncio' => $annuncio]);
     }
 
     /**
@@ -34,7 +37,22 @@ class DettagliController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dettagli = new Dettagli;
+        $dettagli->id = $request->id;
+        $dettagli->proprietari = $request->proprietari;
+        $dettagli->cambio = $request->cambio;
+        $dettagli->vernice = $request->vernice;
+        $dettagli->rivestimenti = $request->rivestimenti;
+        $dettagli->posti = $request->posti;
+        $dettagli->porte = $request->porte;
+        $dettagli->consumi = $request->consumi;
+        $dettagli->emissioni = $request->emissioni;
+        $dettagli->equipaggiamento = $request->equipaggiamento;
+
+
+        $dettagli->save();
+
+        return redirect()->route('create.immagini', [$dettagli->id]);
     }
 
     /**
@@ -45,7 +63,8 @@ class DettagliController extends Controller
      */
     public function show($id)
     {
-        //
+        $dettagli = Dettagli::findorfail($id);
+        return view('mostra_annuncio', [$dettagli->id]);
     }
 
     /**
