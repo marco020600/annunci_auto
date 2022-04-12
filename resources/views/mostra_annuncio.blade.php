@@ -8,6 +8,9 @@
     <div class="container col-5">
         <div class="card text-center">
             <div class="card-body">
+                <div class="card-image">
+                    <div class="card-image"><img src="/storage/immagini/" width="200" class="img-thumbnail" /></div>
+                </div>
               <p class="card-text">{{$annuncio->descrizione}}</p>
               <p class="card-text">Prezzo: {{$annuncio->prezzo}}€</p>
               <p class="card-text">Stato: {{$annuncio->stato}}</p>

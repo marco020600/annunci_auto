@@ -23,6 +23,11 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/inserisci/annuncio">Inserisci un annuncio</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/miei/annunci">I miei annunci</a>
+          </li>
+
           <li class="nav-item">
             <form method="POST" action="{{ route('logout') }}">
               @csrf

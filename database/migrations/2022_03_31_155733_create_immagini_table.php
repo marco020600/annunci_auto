@@ -16,7 +16,7 @@ class CreateImmaginiTable extends Migration
         Schema::create('immagini', function (Blueprint $table) {
             $table->id();
             $table->string('namefile')->nullable();
-            $table->unsignedBigInteger('annuncio_id');
+            $table->foreignId('annuncio_id')->change();
 
             $table->foreign('annuncio_id')->references('id')->on('annunci')->onUpdate('cascade')->onDelete('cascade');
         });

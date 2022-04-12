@@ -4,6 +4,15 @@
 
     <div class="container col-5">
     <h1>Inserisci dettagli</h1>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <form method="POST" action="{{Route('store.dettagli', [$annuncio->id])}}">
             @csrf
             <label for="proprietari">Inserisci il numero di proprietari</label>

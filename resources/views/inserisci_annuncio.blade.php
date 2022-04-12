@@ -45,7 +45,7 @@
         <input type="text" class="form-control" name="indirizzo" placeholder="Inserisci l'indirizzo">
         <br>
         <label for="marca" class="fw-normal fs-5">Seleziona la marca</label>
-        <select name="marca" id="marca" onchange="select_modelli()>
+        <select name="marca" id="marca">
             @foreach ($marche as $marca)
                 <option value="{{$marca->id}}" name="marca">{{$marca->nome}}</option>
             @endforeach
@@ -54,7 +54,7 @@
         <label for="modello_id" class="fw-normal fs-5">Seleziona il modello:</label>
         <select name="modello_id" id="modello">
             @foreach ($modelli as $modello)
-                <option value="{{$modello->id}}" name="modello">{{$modello->nome}}</option>
+            <option value="{{$modello->id}}" name="modello">{{$modello->nome}}</option>
             @endforeach
         </select>
         <br><br>

@@ -37,6 +37,18 @@ class DettagliController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'proprietari' => 'required',
+            'cambio' => 'required',
+            'vernice' => 'required',
+            'rivestimenti' => 'required',
+            'posti' => 'required',
+            'porte' => 'required',
+            'consumi' => 'required',
+            'emissioni' => 'required',
+            'equipaggiamento' => 'required'
+        ]);
+
         $dettagli = new Dettagli;
         $dettagli->id = $request->id;
         $dettagli->proprietari = $request->proprietari;
@@ -75,7 +87,8 @@ class DettagliController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dettagli = Dettagli::find($id);
+        return view('edit_dettagli', compact('dettagli'));
     }
 
     /**
@@ -87,7 +100,30 @@ class DettagliController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'proprietari' => 'required',
+            'cambio' => 'required',
+            'vernice' => 'required',
+            'rivestimenti' => 'required',
+            'posti' => 'required',
+            'porte' => 'required',
+            'consumi' => 'required',
+            'emissioni' => 'required',
+            'equipaggiamento' => 'required'
+        ]);
+        
+        $dettagli = Dettagli::find($id);
+        $dettagli->proprietari = $request->proprietari;
+        $dettagli->cambio = $request->cambio;
+        $dettagli->vernice = $request->vernice;
+        $dettagli->rivestimenti = $request->rivestimenti;
+        $dettagli->posti = $request->posti;
+        $dettagli->porte = $request->porte;
+        $dettagli->consumi = $request->consumi;
+        $dettagli->emissioni = $request->emissioni;
+        $dettagli->equipaggiamento = $request->equipaggiamento;
+        $dettagli->save();
+        return redirect()->route('edit.immagine', [$dettagli->id]);
     }
 
     /**

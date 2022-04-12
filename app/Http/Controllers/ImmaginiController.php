@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Annuncio;
 use App\Models\Immagine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImmaginiController extends Controller
 {
@@ -37,9 +38,15 @@ class ImmaginiController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validated = $request->validate([
+            'nomefile' => 'required',
+        ]);
+
+        $path = $request->file('nomefile')->store('public/immagini');
+        $nome = explode("/", $path);
+
         $immagine = new Immagine;
-        $immagine->nomefile = $request->nomefile;
+        $immagine->nomefile = $nome[2];
         $immagine->annuncio_id = $request->id;
         $immagine->save();
 
@@ -65,7 +72,9 @@ class ImmaginiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dettagli = Annuncio::find($id);
+        $immagine = Immagine::find($id);
+        return view('edit_immagine', compact('immagine'), compact('dettagli') );
     }
 
     /**
@@ -77,7 +86,19 @@ class ImmaginiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nomefile' => 'required',
+        ]);
+        
+        $immagine = Immagine::find($id);
+
+        $path = $request->file('nomefile')->store('public/immagini');
+        $nome = explode("/", $path);
+        
+        $immagine->nomefile = $nome[2];
+        $immagine->save();
+
+        return redirect()->route('index');
     }
 
     /**

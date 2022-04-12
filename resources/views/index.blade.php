@@ -9,6 +9,7 @@
     @foreach ($annunci as $annuncio)
     <div class="card text-center">
         <div class="card-body">
+          <div class="card-image"><img src="storage/immagini/{{$annuncio->nomefile}}" width="200" class="img-thumbnail" /></div>
           <h5 class="card-title">{{$annuncio->titolo}}</h5>
           <p class="card-text">{{$annuncio->descrizione}}</p>
           <p class="card-text">{{$annuncio->prezzo}}€</p>
